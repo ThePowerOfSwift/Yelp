@@ -19,14 +19,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Nrr-6a-WJn"/>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="113" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gfl-Us-Qh6">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BusinessCell" rowHeight="113" id="9Is-BQ-LGb" customClass="BusinessCell" customModule="Yelp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="375" height="113"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="113"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Is-BQ-LGb" id="K1w-95-DA4">
-                                            <frame key="frameInset" width="375" height="112.5"/>
+                                            <frame key="frameInset" width="375" height="112"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iZS-xs-uDD">
@@ -112,6 +113,10 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Nrr-6a-WJn" firstAttribute="top" secondItem="hR0-74-jRp" secondAttribute="bottom" id="8J4-aK-cqd"/>
+                            <constraint firstAttribute="trailing" secondItem="Nrr-6a-WJn" secondAttribute="trailing" id="933-3U-agj"/>
+                            <constraint firstItem="Nrr-6a-WJn" firstAttribute="leading" secondItem="XhR-oz-92f" secondAttribute="leading" id="BT7-h9-uqs"/>
+                            <constraint firstItem="VBY-gq-v8E" firstAttribute="top" secondItem="Nrr-6a-WJn" secondAttribute="bottom" id="He5-1t-FY8"/>
                             <constraint firstItem="VBY-gq-v8E" firstAttribute="top" secondItem="gfl-Us-Qh6" secondAttribute="bottom" id="Tqc-KV-ugJ"/>
                             <constraint firstItem="gfl-Us-Qh6" firstAttribute="top" secondItem="XhR-oz-92f" secondAttribute="top" id="j3R-Mb-peu"/>
                             <constraint firstItem="gfl-Us-Qh6" firstAttribute="leading" secondItem="XhR-oz-92f" secondAttribute="leading" id="oYj-qn-c32"/>
@@ -124,14 +129,51 @@
                                 <segue destination="jDE-KP-JEP" kind="presentation" id="TzV-Tk-gWt"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="9mW-6U-tnA">
+                            <connections>
+                                <action selector="mapButtonTapped:" destination="2xI-yr-O5N" id="OXq-6y-L1f"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="businessTableView" destination="gfl-Us-Qh6" id="QpZ-1J-jvi"/>
+                        <outlet property="mapButton" destination="9mW-6U-tnA" id="hUL-iy-1X5"/>
+                        <outlet property="mapView" destination="Nrr-6a-WJn" id="nZ1-Qf-g9K"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-4b-F1b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2727.1999999999998" y="357.57121439280365"/>
+        </scene>
+        <!--Map-->
+        <scene sceneID="rGo-yy-ubr">
+            <objects>
+                <viewController title="Map" id="aZ8-LC-kGb" customClass="MapViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Yqc-Nb-sW3"/>
+                        <viewControllerLayoutGuide type="bottom" id="NJt-eH-Re8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4l1-hi-ixF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yvX-yX-sfF"/>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="NJt-eH-Re8" firstAttribute="top" secondItem="yvX-yX-sfF" secondAttribute="bottom" id="0do-CN-Apf"/>
+                            <constraint firstItem="yvX-yX-sfF" firstAttribute="leading" secondItem="4l1-hi-ixF" secondAttribute="leading" id="7HX-Ou-oiO"/>
+                            <constraint firstAttribute="trailing" secondItem="yvX-yX-sfF" secondAttribute="trailing" id="KPA-TP-24b"/>
+                            <constraint firstItem="yvX-yX-sfF" firstAttribute="top" secondItem="Yqc-Nb-sW3" secondAttribute="bottom" id="OPr-cO-ycJ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="yvX-yX-sfF" id="luy-p2-Tmt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Af-xN-fnV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2727" y="1063"/>
         </scene>
         <!--Filter View Controller-->
         <scene sceneID="twm-ln-gG5">

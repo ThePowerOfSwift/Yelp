@@ -57,6 +57,7 @@ class YelpClient: BDBOAuth1RequestOperationManager {
         
         // Default the location to San Francisco
         // Added offset
+        // TODO: change location
         var parameters: [String : AnyObject] = ["term": term as AnyObject, "ll": "37.785771,-122.406165" as AnyObject, "offset": String(offset) as AnyObject]
         
         

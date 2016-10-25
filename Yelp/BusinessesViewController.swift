@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIScrollViewDelegate, FilterViewControllerDelegate {
     
@@ -16,7 +17,12 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var isFetchingData = false
     var filterSettings = FilterSettings()
     
-    @IBOutlet weak var businessTableView: UITableView!
+    // Map variables
+    var isMapShowing = false
+    
+    @IBOutlet var businessTableView: UITableView!
+    @IBOutlet weak var mapButton: UIBarButtonItem!
+    @IBOutlet var mapView: MKMapView!
     
 // MARK: Lifecycle methods
     
@@ -37,6 +43,10 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
         
+        // Map
+        let centerLocation = CLLocation(latitude: 37.7833, longitude: -122.4167)
+        goToLocation(location: centerLocation)
+        
         doSearch(with: searchBar.text!, offset: 0)
     }
     
@@ -50,6 +60,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             destinationVC.currentFilter = filterSettings
             destinationVC.delegate = self
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        businessTableView.contentInset.top = topLayoutGuide.length
     }
     
 // MARK: TableView methods
@@ -152,6 +167,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             self.isFetchingData = false
             self.loadingMoreView?.stopAnimating()
             self.businessTableView.reloadData()
+            
+            // Place pins on Map
+            self.populateMapView()
             }
         )
         
@@ -173,5 +191,40 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         filterSettings = newFilter
         doSearch(with: searchBar.text!, offset: 0)
         
+    }
+    
+// MARK: Map methods
+    func populateMapView() {
+        for business in businesses {
+            if business.location2D != nil {
+                self.addAnnotationAtCoordinate(coordinate: business.location2D!, named:business.name!)
+            }
+        }
+    }
+
+    @IBAction func mapButtonTapped(_ sender: UIBarButtonItem) {
+        let toView = isMapShowing ? businessTableView : mapView
+        let fromView = isMapShowing ? mapView : businessTableView
+        
+        
+        UIView.transition(from: fromView, to: toView, duration: 0.5, options: [UIViewAnimationOptions.transitionFlipFromLeft, UIViewAnimationOptions.showHideTransitionViews]) { (Bool) in            
+        }
+        self.isMapShowing = !self.isMapShowing
+        self.mapButton.title = self.isMapShowing ? "List" : "Map"
+
+    }
+    
+    func goToLocation(location: CLLocation) {
+        let span = MKCoordinateSpanMake(0.1, 0.1)
+        let region = MKCoordinateRegionMake(location.coordinate, span)
+        mapView.setRegion(region, animated: true)
+    }
+    
+    // add an Annotation with a coordinate: CLLocationCoordinate2D
+    func addAnnotationAtCoordinate(coordinate: CLLocationCoordinate2D, named:String) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = named
+        mapView.addAnnotation(annotation)
     }
 }

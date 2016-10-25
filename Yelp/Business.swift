@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import MapKit
 
 class Business: NSObject {
     let name: String?
+    let location2D: CLLocationCoordinate2D?
     let address: String?
     let imageURL: URL?
     let categories: String?
@@ -18,6 +20,7 @@ class Business: NSObject {
     let reviewCount: NSNumber?
     
     init(dictionary: NSDictionary) {
+        print(dictionary)
         name = dictionary["name"] as? String
         
         let imageURLString = dictionary["image_url"] as? String
@@ -44,6 +47,21 @@ class Business: NSObject {
             }
         }
         self.address = address
+        
+        // Added coordinates for map
+        if location != nil {
+            let coordinates = location!["coordinate"] as? NSDictionary
+            if coordinates != nil {
+                let latitude = coordinates!["latitude"] as? Double
+                let longitude = coordinates!["longitude"] as? Double
+                self.location2D = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
+            } else {
+                self.location2D = nil
+            }
+        }
+        else {
+            self.location2D = nil
+        }
         
         let categoriesArray = dictionary["categories"] as? [[String]]
         if categoriesArray != nil {
